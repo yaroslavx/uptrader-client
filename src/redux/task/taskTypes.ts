@@ -1,3 +1,5 @@
+import { CommentType } from '../comment/commentsTypes';
+
 export type TaskType = {
   id: string;
   title: string;
@@ -18,21 +20,4 @@ export type Subtask = {
   description: string;
   done: boolean;
   taskId: string;
-};
-
-export type CommentType = {
-  id: string;
-  message: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  taskId: string;
-  children: CommentType[];
-  parentId: string;
-};
-
-export type User = {
-  id: string;
-  name: string;
-  comments: CommentType[];
 };

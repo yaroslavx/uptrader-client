@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { taskInitialState } from '../task/taskSlice';
 import { Project } from './projectTypes';
 
 const initialState: { project: Project } = {
@@ -10,40 +11,7 @@ const initialState: { project: Project } = {
         id: '',
         title: '',
         projectId: '',
-        tasks: [
-          {
-            id: '',
-            title: '',
-            description: '',
-            createdAt: new Date(),
-            inProcess: '',
-            finishAt: new Date(),
-            priority: '',
-            status: '',
-            file: '',
-            columnId: '',
-            subtasks: [
-              {
-                id: '',
-                description: '',
-                done: false,
-                taskId: '',
-              },
-            ],
-            comments: [
-              {
-                id: '',
-                message: '',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                userId: '',
-                taskId: '',
-                children: [],
-                parentId: '',
-              },
-            ],
-          },
-        ],
+        tasks: [taskInitialState],
       },
     ],
   },

@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import project from './project/projectSlice';
 import task from './task/taskSlice';
+import comments from './comment/commentsSlice';
 
 const store = configureStore({
   reducer: {
     project,
     task,
+    comments,
   },
 });
 

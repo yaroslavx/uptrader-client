@@ -1,17 +1,21 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { ProjectStatus } from "../tasksColumn/TasksColumn"
 import { HiOutlineChat } from 'react-icons/hi'
 import "./task.scss"
 import TaskModal from "./taskModal/TaskModal"
-import { TaskType } from "../../redux/project/projectTypes"
 import { TaskProvider } from "./contexts/TaskContext"
+import { TaskType } from "../../redux/task/taskTypes"
+import { useAppDispatch } from "../../redux/store"
+import { setTask } from "../../redux/task/taskSlice"
 
-type Task = {
+type TaskProps = {
     task: TaskType
     handleDragging: (dragging: boolean) => void
 }
 
-const Task: FC<Task> = ({ task, handleDragging }: Task) => {
+const Task: FC<TaskProps> = ({ task, handleDragging }: TaskProps) => {
+    const dispatch = useAppDispatch()
+
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         e.dataTransfer.setData('text', `${task.id}`)
         handleDragging(true)
@@ -21,6 +25,7 @@ const Task: FC<Task> = ({ task, handleDragging }: Task) => {
 
     const [openedModal, setOpenedModal] = useState(false)
     const openCloseTask = () => {
+        dispatch(setTask({ task }))
         setOpenedModal(prev => !prev)
     }
 
@@ -40,7 +45,7 @@ const Task: FC<Task> = ({ task, handleDragging }: Task) => {
                 </div>
                 {/* <div className="task_files">some files</div> */}
             </div >
-            {openedModal && <TaskProvider id={task.id}><TaskModal close={openCloseTask} /></TaskProvider>}
+            {openedModal && <TaskModal close={openCloseTask} />}
         </>
 
     )

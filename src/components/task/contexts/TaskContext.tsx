@@ -33,16 +33,16 @@ type TaskProviderProps = {
 };
 
 export const TaskProvider = ({ id, children }: TaskProviderProps) => {
-  const { project } = useSelector(selectProject)
-  const columns = project && project.columns;
-  const tasks: TaskType[] = [];
-  columns?.forEach((column) => tasks.push(...column.tasks));
-  const [listTasks, setListTasks] = useState<TaskType[]>([]);
-  useEffect(() => {
-    setListTasks(tasks);
-  }, [project]);
+  // const { project } = useSelector(selectProject)
+  // const columns = project && project.columns;
+  // const tasks: TaskType[] = [];
+  // columns?.forEach((column) => tasks.push(...column.tasks));
+  // const [listTasks, setListTasks] = useState<TaskType[]>([]);
+  // useEffect(() => {
+  //   setListTasks(tasks);
+  // }, [project]);
 
-  const task = listTasks.find(task => task.id === id)
+  // const task = listTasks.find(task => task.id === id)
   // const { loading, error, value: taskFromServer } = useAsync(() => getTask(id), [id]);
   // const [task, setTask] = useState<TaskType>()
   // useEffect(() => {

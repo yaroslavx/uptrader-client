@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react"
-import { TaskType } from "../../redux/project/projectTypes"
+import { TaskType } from "../../redux/task/taskTypes"
 import Task from "../task/Task"
 import "./tasksColumn.scss"
 

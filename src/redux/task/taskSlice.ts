@@ -1,39 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { commentInitialState } from '../comment/commentsSlice';
 import { TaskType } from './taskTypes';
 
-const initialState: { task: TaskType } = {
-  task: {
-    id: '',
-    title: '',
-    description: '',
-    createdAt: new Date(),
-    inProcess: '',
-    finishAt: new Date(),
-    priority: '',
-    status: '',
-    file: '',
-    columnId: '',
-    subtasks: [
-      {
-        id: '',
-        description: '',
-        done: false,
-        taskId: '',
-      },
-    ],
-    comments: [
-      {
-        id: '',
-        message: '',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: '',
-        taskId: '',
-        children: [],
-        parentId: '',
-      },
-    ],
-  },
+export const taskInitialState: TaskType = {
+  id: '',
+  title: '',
+  description: '',
+  createdAt: new Date(),
+  inProcess: '',
+  finishAt: new Date(),
+  priority: '',
+  status: '',
+  file: '',
+  columnId: '',
+  subtasks: [
+    {
+      id: '',
+      description: '',
+      done: false,
+      taskId: '',
+    },
+  ],
+  comments: [commentInitialState],
+};
+
+export const initialState: { task: TaskType } = {
+  task: taskInitialState,
 };
 
 const taskSlice = createSlice({

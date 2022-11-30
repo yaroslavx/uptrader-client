@@ -1,7 +1,12 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react"
+import { useSelector } from "react-redux"
 import { FileNode, root } from "../../../assets/comments"
 import { useAsync, useAsyncFn } from "../../../hooks/useAsync"
-import { TaskType } from "../../../redux/project/projectTypes"
+import { selectComments } from "../../../redux/comment/commentsSelector"
+import { setComments } from "../../../redux/comment/commentsSlice"
+import { CommentType } from "../../../redux/comment/commentsTypes"
+import { useAppDispatch } from "../../../redux/store"
+import { selectTask } from "../../../redux/task/taskSelector"
 import { createComment } from "../../../services/comment"
 import { getTask } from "../../../services/tasks"
 import { useTask } from "../contexts/TaskContext"
@@ -31,10 +36,36 @@ export type TaskModal = {
 //     )
 // }
 
+type commentsByParentIdType = {
+    [key: string]: CommentType[]
+}
 
 const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
+    const { task } = useSelector(selectTask)
+    useEffect(() => {
+        if (task?.comments == null) return;
+        // setComments(task.comments);
+        dispatch(setComments({ comments: task.comments }))
 
-    const { task, rootComments, createLocalComment } = useTask();
+    }, [task?.comments]);
+
+    const { comments } = useSelector(selectComments)
+
+    // const [comments, setComments] = useState<CommentType[]>([]);
+    const commentsByParentId: commentsByParentIdType = useMemo(() => {
+        if (comments == null) return {};
+        const group: commentsByParentIdType = {};
+        comments.forEach((comment) => {
+            group[comment.parentId] ||= [];
+            group[comment.parentId].push(comment);
+        });
+        return group;
+    }, [comments]);
+
+    const dispatch = useAppDispatch()
+
+    // const { rootComments, createLocalComment } = useTask();
+
     const {
         loading,
         error,
@@ -43,7 +74,9 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
 
     function onCommentCreate(message: string) {
         return createCommentFn({ taskId: task.id, message }).then(
-            createLocalComment
+            (comment: CommentType) => setComments((prevComments) => {
+                return [comment, ...prevComments];
+            })
         );
     }
 
@@ -57,9 +90,9 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
                         <h3 className='comments-title'>Comments</h3>
                         <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} />
                         <section>
-                            {rootComments != null && rootComments.length > 0 && (
+                            {commentsByParentId['null'] != null && commentsByParentId['null'].length > 0 && (
                                 <div className='mt-4'>
-                                    <CommentList comments={rootComments} />
+                                    <CommentList comments={commentsByParentId['null']} />
                                 </div>
                             )}
                         </section>

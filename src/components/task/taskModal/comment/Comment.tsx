@@ -1,18 +1,17 @@
 import { IconButton } from './IconButton';
 import { FaHeart, FaReply, FaEdit, FaTrash } from 'react-icons/fa';
-import { usePost } from '../contexts/PostContext';
-import CommentList from './CommentList';
 import { useState } from 'react';
-import { useAsyncFn } from '../hooks/useAsync';
-import {
-    createComment,
-    updateComment,
-    deleteComment,
-} from '../services/comment';
-import CommentForm from './CommentForm';
-import { useUser } from '../hooks/useUser';
+
 import { useSelector } from 'react-redux';
 import { selectProject } from '../../../../redux/project/projectSeleсtor';
+import { selectTask } from '../../../../redux/task/taskSelector';
+import { selectComments } from '../../../../redux/comment/commentsSelector';
+import { CommentType, User } from '../../../../redux/comment/commentsTypes';
+import { useUser } from '../../../../hooks/useUser';
+import CommentForm from '../commentForm/CommentForm';
+import { createComment, deleteComment, updateComment } from '../../../../services/comment';
+import { useAsyncFn } from '../../../../hooks/useAsync';
+import CommentList from '../commentList/CommentList';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -20,43 +19,58 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 });
 
 type CommentProps = {
-    id: string,
-    message: string,
-    user: string,
-    createdAt: string
+    id: string;
+    message: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: User;
+    taskId: string;
+    children: CommentType[];
+    parentId: string;
 }
 
 const Comment = ({ id, message, user, createdAt }: CommentProps) => {
-    const { project } = useSelector(selectProject)
-    const {
-        task,
-        getReplies,
-        createLocalComment,
-        updateLocalComment,
-        deleteLocalComment,
-    } = usePost();
+    const { task } = useSelector(selectTask)
+    const { comments: commentsByParentId } = useSelector(selectComments)
+
+    // const {
+    //     createLocalComment,
+    //     updateLocalComment,
+    //     deleteLocalComment,
+    // } = usePost();
+
+    function createLocalComment(comment: CommentType) {
+        setComments((prevComments) => {
+            return [comment, ...prevComments];
+        });
+    }
+
+    function getReplies(parentId: string) {
+        return commentsByParentId[parentId];
+    };
+
     const childComments = getReplies(id);
     const [areChildrenHidden, setAreChildrenHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const createCommentFn = useAsyncFn(createComment);
-    const updateCommentFn = useAsyncFn(updateComment);
-    const deleteCommentFn = useAsyncFn(deleteComment);
+    const createCommentFn = useAsyncFn(createComment as any);
+    const updateCommentFn = useAsyncFn(updateComment as any);
+    const deleteCommentFn = useAsyncFn(deleteComment as any);
     const currentUser = useUser();
 
-    function onCommentReply(message) {
+    function onCommentReply(message: string) {
         return createCommentFn
-            .execute({ postId: project.id, message, parentId: id })
-            .then((comment) => {
+            .execute({ taskId: task.id, message, parentId: id })
+            .then((comment: CommentType) => {
                 setIsReplying(false);
                 createLocalComment(comment);
             });
     }
 
-    function onCommentUpdate(message) {
+    function onCommentUpdate(message: string) {
         return updateCommentFn
-            .execute({ postId: post.id, message, id })
-            .then((comment) => {
+            .execute({ taskId: task.id, message, id })
+            .then((comment: CommentType) => {
                 setIsEditing(false);
                 updateLocalComment(id, comment.message);
             });
@@ -64,8 +78,8 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
 
     function onCommentDelete() {
         return deleteCommentFn
-            .execute({ postId: post.id, id })
-            .then((comment) => deleteLocalComment(comment.id));
+            .execute({ taskId: task.id, id })
+            .then((comment: CommentType) => deleteLocalComment(comment.id));
     }
 
     return (
@@ -74,7 +88,7 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
                 <div className='header'>
                     <span className='name'>{user.name}</span>
                     <span className='date'>
-                        {dateFormatter.format(Date.parse(createdAt))}
+                        {dateFormatter.format(createdAt)}
                     </span>
                 </div>
                 {isEditing ? (
