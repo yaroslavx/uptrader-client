@@ -1,0 +1,22 @@
+.task_modal_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  min-height: 800px;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+
+  .task_modal {
+    width: 80%;
+    height: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    z-index: 20;
+  }
+}

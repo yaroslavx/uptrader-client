@@ -1,27 +1,28 @@
 import { FC, ReactNode } from "react"
-import { Data } from "../../assets/data"
+import { Data } from "../../assets/tasks"
+import { TaskType } from "../../redux/project/projectTypes"
 import Task from "../task/Task"
 import "./tasksColumn.scss"
 
-export type ProjectStatus = 'queue' | 'development' | 'done'
+export type ProjectStatus = 'Queue' | 'Development' | 'Done'
 
 type TasksColumn = {
     status: ProjectStatus
     children?: ReactNode
-    items: Data[]
+    tasks: TaskType[]
     isDragging: boolean
     handleDragging: (dragging: boolean) => void
-    handleUpdateList: (id: number, status: ProjectStatus) => void
+    handleUpdateList: (id: string, status: ProjectStatus) => void
 }
 
-const TasksColumn: FC<TasksColumn> = ({ items = [], status, isDragging, handleDragging, handleUpdateList, children }: TasksColumn) => {
+const TasksColumn: FC<TasksColumn> = ({ tasks = [], status, isDragging, handleDragging, handleUpdateList, children }: TasksColumn) => {
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
     }
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        const id = +e.dataTransfer.getData('text')
+        const id = e.dataTransfer.getData('text')
         handleUpdateList(id, status)
         handleDragging(false)
     }
@@ -33,7 +34,7 @@ const TasksColumn: FC<TasksColumn> = ({ items = [], status, isDragging, handleDr
             <div className="column">
                 <h2>{status}</h2>
                 <div className="column_tasks">
-                    {items.map(item => (status === item.status && < Task key={item.id} data={item} handleDragging={handleDragging} />))}
+                    {tasks.map(task => (status === task.status && <Task key={task.id} data={task} handleDragging={handleDragging} />))}
                 </div>
             </div>
         </div>

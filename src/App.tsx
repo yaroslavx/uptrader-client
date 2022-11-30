@@ -7,15 +7,17 @@ import {
 } from "react-router-dom";
 import ProjectsPage from './pages/projectsPage/ProjectsPage';
 import ProjectPage from './pages/projectPage/ProjectPage';
+import store from "./redux/store";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
     {
-        path: "projects",
+        path: "/",
         element: <ProjectsPage />,
     },
     {
         path: "projects/:id",
-        element: <ProjectPage />,
+        element: <Provider store={store}><ProjectPage /></Provider>,
     },
 ]);
 

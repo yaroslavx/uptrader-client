@@ -1,0 +1,47 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Project N1",
+      "columns": [
+        {
+          "id": 1,
+          "title": "Queue",
+          "tasks": [
+            {
+              "id": 1,
+              "title": "Task N1",
+              "description": "Interesting task",
+              "createdAt": "2021-01-23",
+              "inProcess": "60",
+              "finishAt": "2022-12-17",
+              "priority": "Main",
+              "files": [],
+              "status": "Done",
+              "subtasks": [
+                {
+                  "id": 1,
+                  "body": "Do that",
+                  "done": false
+                }
+              ],
+              "comments": [
+                {
+                  "id": 1,
+                  "body": "Comment N1",
+                  "comments": [
+                    {
+                      "id": 2,
+                      "body": "Comment N2",
+                      "comments": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

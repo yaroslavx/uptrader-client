@@ -1,18 +1,44 @@
-import { useState } from 'react';
-import { Data } from '../assets/data';
+import { useEffect, useState } from 'react';
+import { Data } from '../assets/tasks';
+import Task from '../components/task/Task';
 import { ProjectStatus } from '../components/tasksColumn/TasksColumn';
+import { Project, TaskType } from '../redux/project/projectTypes';
+import { useAppDispatch } from '../redux/store';
+import { updateTaskStatus } from '../services/tasks';
+import { useAsyncFn } from './useAsync';
 
-export const useDragAndDrop = (initialState: Data[]) => {
+export const useDragAndDrop = (project: Project | undefined) => {
+  const dispatch = useAppDispatch();
+  const columns = project && project.columns;
+  const tasks: TaskType[] = [];
+  columns?.forEach((column) => tasks.push(...column.tasks));
   const [isDragging, setIsDragging] = useState(false);
-  const [listItems, setListItems] = useState<Data[]>(initialState);
+  const [listTasks, setListTasks] = useState<TaskType[]>(tasks);
 
-  const handleUpdateList = (id: number, status: ProjectStatus) => {
-    let card = listItems.find((item) => item.id === id);
+  const updateTaskStatusFn = useAsyncFn(updateTaskStatus as any);
 
-    if (card && card.status !== status) {
-      card.status = status;
+  useEffect(() => {
+    setListTasks(tasks);
+  }, [project]);
 
-      setListItems((prev) => [card!, ...prev.filter((item) => item.id !== id)]);
+  const handleUpdateList = (id: string, status: ProjectStatus) => {
+    let task = listTasks.find((task) => task.id === id);
+
+    if (task && task.status !== status) {
+      const newTask = JSON.parse(JSON.stringify(task));
+
+      updateTaskStatusFn
+        .execute({
+          taskId: task.id,
+          status: status,
+        })
+        .then((_) => {
+          newTask.status = status;
+          setListTasks((prev) => [
+            newTask,
+            ...prev.filter((task) => task.id !== id),
+          ]);
+        });
     }
   };
 
@@ -20,7 +46,7 @@ export const useDragAndDrop = (initialState: Data[]) => {
 
   return {
     isDragging,
-    listItems,
+    listTasks,
     handleUpdateList,
     handleDragging,
   };
