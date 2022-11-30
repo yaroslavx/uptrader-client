@@ -1,19 +1,19 @@
 import { FC, useState } from "react"
-import { Data } from "../../assets/tasks"
 import { ProjectStatus } from "../tasksColumn/TasksColumn"
 import { HiOutlineChat } from 'react-icons/hi'
 import "./task.scss"
 import TaskModal from "./taskModal/TaskModal"
 import { TaskType } from "../../redux/project/projectTypes"
+import { TaskProvider } from "./contexts/TaskContext"
 
 type Task = {
-    data: TaskType
+    task: TaskType
     handleDragging: (dragging: boolean) => void
 }
 
-const Task: FC<Task> = ({ data, handleDragging }: Task) => {
+const Task: FC<Task> = ({ task, handleDragging }: Task) => {
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-        e.dataTransfer.setData('text', `${data.id}`)
+        e.dataTransfer.setData('text', `${task.id}`)
         handleDragging(true)
     }
 
@@ -27,20 +27,20 @@ const Task: FC<Task> = ({ data, handleDragging }: Task) => {
     return (
         <>
             <div className="task_container" draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <span className="task_number">{data.id.slice(0, 3)}</span>
+                <span className="task_number">{task.id.slice(0, 3)}</span>
                 <div className="task_comments" onClick={openCloseTask}><HiOutlineChat /></div>
-                <h2 className="task_title">{data.title}</h2>
+                <h2 className="task_title">{task.title}</h2>
                 {/* <p className="task_description">Description</p> */}
                 {/* <span className="date_creation">01.01.2021</span> */}
                 {/* <span className="development_time">60 days</span> */}
-                <span className="date_done">{(new Date(data.finishAt)).toDateString()}</span>
+                <span className="date_done">{(new Date(task.finishAt)).toDateString()}</span>
                 <div className="priority_status">
-                    <span className="task_priority">{data.priority}</span>
-                    <span className={`task_status ${data.status.toLowerCase()}`}>{data.status}</span>
+                    <span className="task_priority">{task.priority}</span>
+                    <span className={`task_status ${task.status.toLowerCase()}`}>{task.status}</span>
                 </div>
                 {/* <div className="task_files">some files</div> */}
             </div >
-            {openedModal && <TaskModal close={openCloseTask} />}
+            {openedModal && <TaskProvider id={task.id}><TaskModal close={openCloseTask} /></TaskProvider>}
         </>
 
     )

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Data } from '../../assets/tasks'
 import Task from '../../components/task/Task'
 import TasksColumn, { ProjectStatus } from '../../components/tasksColumn/TasksColumn'
 import { useAsync } from '../../hooks/useAsync'

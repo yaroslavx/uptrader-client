@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export const useAsync = (func: () => Promise<any>, dependencies = []) => {
+export const useAsync = (
+  func: () => Promise<any>,
+  dependencies: string[] = []
+) => {
   const { execute, ...state } = useAsyncInternal(func, dependencies, true);
 
   useEffect(() => {
@@ -10,7 +13,10 @@ export const useAsync = (func: () => Promise<any>, dependencies = []) => {
   return state;
 };
 
-export const useAsyncFn = (func: () => Promise<any>, dependencies = []) => {
+export const useAsyncFn = (
+  func: () => Promise<any>,
+  dependencies: string[] = []
+) => {
   return useAsyncInternal(func, dependencies, false);
 };
 

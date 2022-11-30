@@ -11,9 +11,9 @@ type TaskRequest = {
 //   return makeRequest('/tasks');
 // };
 
-// export function getTask(id: string) {
-//   return makeRequest(`/tasks/${id}`);
-// }
+export function getTask(id: string) {
+  return makeRequest(`/tasks/${id}`);
+}
 
 export function updateTaskStatus({ taskId, status }: TaskRequest) {
   return makeRequest(`tasks/changeStatus/${taskId}`, {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Data } from '../assets/tasks';
 import Task from '../components/task/Task';
 import { ProjectStatus } from '../components/tasksColumn/TasksColumn';
 import { Project, TaskType } from '../redux/project/projectTypes';

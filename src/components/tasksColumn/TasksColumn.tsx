@@ -1,5 +1,4 @@
 import { FC, ReactNode } from "react"
-import { Data } from "../../assets/tasks"
 import { TaskType } from "../../redux/project/projectTypes"
 import Task from "../task/Task"
 import "./tasksColumn.scss"
@@ -34,7 +33,7 @@ const TasksColumn: FC<TasksColumn> = ({ tasks = [], status, isDragging, handleDr
             <div className="column">
                 <h2>{status}</h2>
                 <div className="column_tasks">
-                    {tasks.map(task => (status === task.status && <Task key={task.id} data={task} handleDragging={handleDragging} />))}
+                    {tasks.map(task => (status === task.status && <Task key={task.id} task={task} handleDragging={handleDragging} />))}
                 </div>
             </div>
         </div>

@@ -1,28 +1,28 @@
 import { makeRequest } from './makeRequest';
 
 type CommentRequest = {
-  postId: string;
+  taskId: string;
   message?: string;
   parentId?: string;
   id?: string;
 };
 
-export function createComment({ postId, message, parentId }: CommentRequest) {
-  return makeRequest(`posts/${postId}/comments`, {
+export function createComment({ taskId, message, parentId }: CommentRequest) {
+  return makeRequest(`tasks/${taskId}/comments`, {
     method: 'POST',
     data: { message, parentId },
   });
 }
 
-export function updateComment({ postId, message, id }: CommentRequest) {
-  return makeRequest(`posts/${postId}/comments/${id}`, {
+export function updateComment({ taskId, message, id }: CommentRequest) {
+  return makeRequest(`posts/${taskId}/comments/${id}`, {
     method: 'PUT',
     data: { message },
   });
 }
 
-export function deleteComment({ postId, id }: CommentRequest) {
-  return makeRequest(`posts/${postId}/comments/${id}`, {
+export function deleteComment({ taskId, id }: CommentRequest) {
+  return makeRequest(`posts/${taskId}/comments/${id}`, {
     method: 'DELETE',
   });
 }

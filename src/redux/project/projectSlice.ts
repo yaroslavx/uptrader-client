@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Project, Column } from './projectTypes';
+import { Project } from './projectTypes';
 
 const initialState: { project: Project } = {
   project: {

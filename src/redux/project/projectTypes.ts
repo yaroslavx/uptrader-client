@@ -23,7 +23,7 @@ export type TaskType = {
   file: string;
   columnId: string;
   subtasks: Subtask[];
-  comments: Comment[];
+  comments: CommentType[];
 };
 
 export type Subtask = {
@@ -33,7 +33,7 @@ export type Subtask = {
   taskId: string;
 };
 
-export type Comment = {
+export type CommentType = {
   id: string;
   message: string;
   createdAt: Date;
