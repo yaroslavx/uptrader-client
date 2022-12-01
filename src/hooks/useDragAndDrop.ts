@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { ProjectStatus } from '../components/tasksColumn/TasksColumn';
 import { Project } from '../redux/project/projectTypes';
 import { TaskType } from '../redux/task/taskTypes';
@@ -16,9 +16,10 @@ export const useDragAndDrop = (project: Project | undefined) => {
 
   const updateTaskStatusFn = useAsyncFn(updateTaskStatus as any);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const columns = project && project.columns;
     // const tasks: TaskType[] = [];
+    setListTasks([]);
     columns?.forEach((column) =>
       setListTasks((prev) => [...prev, ...column.tasks])
     );
