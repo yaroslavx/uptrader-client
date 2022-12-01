@@ -9,10 +9,6 @@ type CommentListProps = {
 }
 
 const CommentList = ({ comments }: CommentListProps) => {
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(setComments({ comments }))
-  }, [])
   return <>
     {comments.map((comment) => (
       <div key={comment.id} className='comment-stack'>

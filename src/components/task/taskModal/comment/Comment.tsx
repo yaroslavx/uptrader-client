@@ -36,7 +36,6 @@ type CommentProps = {
 const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
     const dispatch = useAppDispatch()
     const { task } = useSelector(selectTask)
-    console.log(task)
     const { comments: commentsByParentId } = useSelector(selectComments)
     const { loading, error, value: user } = useAsync(() => getUser(userId))
     // const [userFromServer, setUserFromServer] = useState<UserType>()
@@ -60,7 +59,9 @@ const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
     //     return commentsByParentId[parentId];
     // };
 
-    const childComments = commentsByParentId.filter((comment) => comment.id === id);
+    const childComments = commentsByParentId.filter((comment) => comment.parentId === id);
+    console.log("childComment", childComments)
+
     const [areChildrenHidden, setAreChildrenHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
