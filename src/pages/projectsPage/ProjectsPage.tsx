@@ -5,6 +5,8 @@ import { getProjects } from '../../services/project';
 import "./projectsPage.scss"
 
 const ProjectsPage = () => {
+    console.log('Rerender from ProjectsPage')
+
     const { loading, error, value: projects } = useAsync(getProjects);
 
     if (loading) return <h1>Loading...</h1>;

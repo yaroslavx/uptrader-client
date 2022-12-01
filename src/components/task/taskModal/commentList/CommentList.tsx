@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { setComments } from "../../../../redux/comment/commentsSlice";
 import { CommentType } from "../../../../redux/comment/commentsTypes";
-import { useAppDispatch } from "../../../../redux/store";
 import Comment from "../comment/Comment";
 
 type CommentListProps = {
@@ -9,7 +6,8 @@ type CommentListProps = {
 }
 
 const CommentList = ({ comments }: CommentListProps) => {
-  console.log('rerender')
+  console.log('Rerender from CommentList')
+
 
   return <>
     {comments.map((comment) => (

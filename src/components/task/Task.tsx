@@ -1,13 +1,11 @@
-import { FC, useEffect, useState } from "react"
-import { ProjectStatus } from "../tasksColumn/TasksColumn"
+import { FC, useState } from "react"
+
 import { HiOutlineChat } from 'react-icons/hi'
 import "./task.scss"
 import TaskModal from "./taskModal/TaskModal"
 import { TaskType } from "../../redux/task/taskTypes"
 import { useAppDispatch } from "../../redux/store"
 import { setTask } from "../../redux/task/taskSlice"
-import { useAsync } from "../../hooks/useAsync"
-import { getUser } from "../../services/user"
 
 type TaskProps = {
     task: TaskType

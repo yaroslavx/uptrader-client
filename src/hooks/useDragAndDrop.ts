@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react';
-import Task from '../components/task/Task';
 import { ProjectStatus } from '../components/tasksColumn/TasksColumn';
 import { Project } from '../redux/project/projectTypes';
-import { useAppDispatch } from '../redux/store';
 import { TaskType } from '../redux/task/taskTypes';
 import { updateTaskStatus } from '../services/tasks';
 import { useAsyncFn } from './useAsync';
 
 export const useDragAndDrop = (project: Project | undefined) => {
-  const dispatch = useAppDispatch();
-  const columns = project && project.columns;
-  const tasks: TaskType[] = [];
-  columns?.forEach((column) => tasks.push(...column.tasks));
+  console.log('Rerender from DragAndDrop');
+
+  // const columns = project && project.columns;
+  // const tasks: TaskType[] = [];
+  // columns?.forEach((column) => tasks.push(...column.tasks));
   const [isDragging, setIsDragging] = useState(false);
-  const [listTasks, setListTasks] = useState<TaskType[]>(tasks);
+  const [listTasks, setListTasks] = useState<TaskType[]>([]);
 
   const updateTaskStatusFn = useAsyncFn(updateTaskStatus as any);
 
   useEffect(() => {
-    setListTasks(tasks);
+    const columns = project && project.columns;
+    // const tasks: TaskType[] = [];
+    columns?.forEach((column) =>
+      setListTasks((prev) => [...prev, ...column.tasks])
+    );
   }, [project]);
 
   const handleUpdateList = (id: string, status: ProjectStatus) => {

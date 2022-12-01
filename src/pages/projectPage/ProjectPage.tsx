@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import Task from '../../components/task/Task'
 import TasksColumn, { ProjectStatus } from '../../components/tasksColumn/TasksColumn'
 import { useAsync } from '../../hooks/useAsync'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { selectProject } from '../../redux/project/projectSeleсtor'
 import { setProject } from '../../redux/project/projectSlice'
-import { Project } from '../../redux/project/projectTypes'
 import { useAppDispatch } from '../../redux/store'
 import { getProject } from '../../services/project'
 import "./projectPage.scss"
@@ -16,12 +14,17 @@ const projectStatuses: ProjectStatus[] = ['Queue', 'Development', 'Done']
 
 
 const ProjectPage = () => {
-    const dispath = useAppDispatch()
+
+    console.log('Rerender from ProjectPage')
+
+    const dispatch = useAppDispatch()
     const { id } = useParams<string>()
     const { loading, error, value: project } = useAsync(() => getProject(id));
+
     useEffect(() => {
-        if (project) dispath(setProject({ project }))
+        if (project) dispatch(setProject({ project }))
     }, [project])
+
     const { project: projectFromStore } = useSelector(selectProject)
     const { isDragging, listTasks, handleDragging, handleUpdateList } = useDragAndDrop(projectFromStore)
 

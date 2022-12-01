@@ -1,11 +1,11 @@
-import { FC, ReactNode } from "react"
+import { ReactNode } from "react"
 import { TaskType } from "../../redux/task/taskTypes"
 import Task from "../task/Task"
 import "./tasksColumn.scss"
 
 export type ProjectStatus = 'Queue' | 'Development' | 'Done'
 
-type TasksColumn = {
+type TasksColumnProps = {
     status: ProjectStatus
     children?: ReactNode
     tasks: TaskType[]
@@ -14,7 +14,9 @@ type TasksColumn = {
     handleUpdateList: (id: string, status: ProjectStatus) => void
 }
 
-const TasksColumn: FC<TasksColumn> = ({ tasks = [], status, isDragging, handleDragging, handleUpdateList, children }: TasksColumn) => {
+const TasksColumn = ({ tasks = [], status, isDragging, handleDragging, handleUpdateList, children }: TasksColumnProps) => {
+    console.log('Rerender from TaskColumn')
+
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
     }

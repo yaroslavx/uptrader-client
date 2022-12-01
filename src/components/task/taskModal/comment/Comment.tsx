@@ -1,9 +1,8 @@
 import { IconButton } from '../iconButton/IconButton';
-import { FaHeart, FaReply, FaEdit, FaTrash } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { FaReply, FaEdit, FaTrash } from 'react-icons/fa';
+import { useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { selectProject } from '../../../../redux/project/projectSeleсtor';
 import { selectTask } from '../../../../redux/task/taskSelector';
 import { selectComments } from '../../../../redux/comment/commentsSelector';
 import { CommentType } from '../../../../redux/comment/commentsTypes';
@@ -13,9 +12,8 @@ import { createComment, deleteComment, updateComment } from '../../../../service
 import { useAsync, useAsyncFn } from '../../../../hooks/useAsync';
 import CommentList from '../commentList/CommentList';
 import { useAppDispatch } from '../../../../redux/store';
-import { addLocalComment, removeLocalComment, setComments, updateLocalComment } from '../../../../redux/comment/commentsSlice';
+import { addLocalComment, removeLocalComment, updateLocalComment } from '../../../../redux/comment/commentsSlice';
 import { getUser } from '../../../../services/user';
-import { setUseProxies } from 'immer';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -34,33 +32,12 @@ type CommentProps = {
 }
 
 const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
-    console.log('rerender')
+    console.log('Rerender from Comment')
 
     const dispatch = useAppDispatch()
     const { task } = useSelector(selectTask)
     const { comments: commentsByParentId } = useSelector(selectComments)
-    const { loading, error, value: user } = useAsync(() => getUser(userId))
-    // const [userFromServer, setUserFromServer] = useState<UserType>()
-    // useEffect(() => {
-    //     if (user) setUserFromServer(user)
-    // }, [user])
-    // console.log(userFromServer)
-    // const {
-    //     createLocalComment,
-    //     updateLocalComment,
-    //     deleteLocalComment,
-    // } = usePost();
-
-    // function createLocalComment(comment: CommentType) {
-    //     setComments((prevComments) => {
-    //         return [comment, ...prevComments];
-    //     });
-    // }
-
-    // function getReplies(parentId: string) {
-    //     return commentsByParentId[parentId];
-    // };
-
+    const { value: user } = useAsync(() => getUser(userId))
     const childComments = commentsByParentId.filter((comment) => comment.parentId === id);
     const [areChildrenHidden, setAreChildrenHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);

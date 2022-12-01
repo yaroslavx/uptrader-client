@@ -16,6 +16,9 @@ const CommentForm = ({
     autoFocus = false,
     initialValue = '',
 }: CommentFormProps) => {
+
+    console.log('Rerender from CommentForm')
+
     const [message, setMessage] = useState(initialValue);
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {

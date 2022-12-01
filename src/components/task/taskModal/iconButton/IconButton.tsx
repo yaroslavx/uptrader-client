@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
-type IconButton = {
+type IconButtonProps = {
   Icon: IconType,
   isActive?: boolean,
   color?: string,
@@ -9,7 +9,10 @@ type IconButton = {
   onClick?: () => void
 }
 
-export function IconButton({ Icon, isActive, color, children, ...props }: IconButton) {
+export function IconButton({ Icon, isActive, color, children, ...props }: IconButtonProps) {
+  console.log('Rerender from IconButton')
+
+
   return (
     <button
       className={`btn icon-btn ${isActive ? 'icon-btn-active' : ''} ${color || ''

@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom'
 import './projectCard.scss'
 
-type ProjectCard = {
+type ProjectCardProps = {
     id: string
     title: string
 }
 
-const ProjectCard = ({ id, title }: ProjectCard) => {
+const ProjectCard = ({ id, title }: ProjectCardProps) => {
+    console.log("Rerender from ProjectCard")
+
     return (
         <div className='card_container'>
             <Link to={`projects/${id}`}>
