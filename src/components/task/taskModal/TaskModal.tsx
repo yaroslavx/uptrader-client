@@ -97,10 +97,11 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
     return (
         <div onClick={close} className='task_modal_container'>
             <div onClick={e => e.stopPropagation()} className="task_modal">
-                <div style={{ marginLeft: 15 }}>
+                <div>
                     <>
                         <h1>{task.title}</h1>
                         <article>{task.description}</article>
+                        <div className="subtasks">{task.subtasks.map(subtask => <div key={subtask.id} className="subtask">{subtask.description}</div>)}</div>
                         <h3 className='comments-title'>Comments</h3>
                         <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} />
                         <section>
