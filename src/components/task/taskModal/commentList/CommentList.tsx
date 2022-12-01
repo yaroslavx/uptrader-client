@@ -9,6 +9,8 @@ type CommentListProps = {
 }
 
 const CommentList = ({ comments }: CommentListProps) => {
+  console.log('rerender')
+
   return <>
     {comments.map((comment) => (
       <div key={comment.id} className='comment-stack'>

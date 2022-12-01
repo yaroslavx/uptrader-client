@@ -17,7 +17,7 @@ export const initialState: { comments: CommentType[] } = {
 };
 
 const commentSlice = createSlice({
-  name: 'task',
+  name: 'comment',
   initialState,
   reducers: {
     setComments: (
@@ -45,7 +45,7 @@ const commentSlice = createSlice({
       state,
       action: PayloadAction<{ commentId: string }>
     ) => {
-      state.comments.filter(
+      state.comments = state.comments.filter(
         (comment) => comment.id !== action.payload.commentId
       );
     },

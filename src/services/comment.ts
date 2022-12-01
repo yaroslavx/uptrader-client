@@ -15,14 +15,14 @@ export function createComment({ taskId, message, parentId }: CommentRequest) {
 }
 
 export function updateComment({ taskId, message, id }: CommentRequest) {
-  return makeRequest(`posts/${taskId}/comments/${id}`, {
+  return makeRequest(`tasks/${taskId}/comments/${id}`, {
     method: 'PUT',
     data: { message },
   });
 }
 
 export function deleteComment({ taskId, id }: CommentRequest) {
-  return makeRequest(`posts/${taskId}/comments/${id}`, {
+  return makeRequest(`tasks/${taskId}/comments/${id}`, {
     method: 'DELETE',
   });
 }

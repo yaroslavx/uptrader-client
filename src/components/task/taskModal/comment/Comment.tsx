@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectProject } from '../../../../redux/project/projectSeleсtor';
 import { selectTask } from '../../../../redux/task/taskSelector';
 import { selectComments } from '../../../../redux/comment/commentsSelector';
-import { CommentType, UserType } from '../../../../redux/comment/commentsTypes';
+import { CommentType } from '../../../../redux/comment/commentsTypes';
 import { useUser } from '../../../../hooks/useUser';
 import CommentForm from '../commentForm/CommentForm';
 import { createComment, deleteComment, updateComment } from '../../../../services/comment';
@@ -34,6 +34,8 @@ type CommentProps = {
 }
 
 const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
+    console.log('rerender')
+
     const dispatch = useAppDispatch()
     const { task } = useSelector(selectTask)
     const { comments: commentsByParentId } = useSelector(selectComments)
@@ -60,8 +62,6 @@ const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
     // };
 
     const childComments = commentsByParentId.filter((comment) => comment.parentId === id);
-    console.log("childComment", childComments)
-
     const [areChildrenHidden, setAreChildrenHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -117,9 +117,6 @@ const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
                     <div className='message'>{message}</div>
                 )}
                 <div className='footer'>
-                    <IconButton Icon={FaHeart} aria-label='Like'>
-                        2
-                    </IconButton>
                     <IconButton
                         onClick={() => setIsReplying((prev) => !prev)}
                         isActive={isReplying}

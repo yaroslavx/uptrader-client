@@ -7,6 +7,8 @@ import { addLocalComment, setComments } from "../../../redux/comment/commentsSli
 import { CommentType } from "../../../redux/comment/commentsTypes"
 import { useAppDispatch } from "../../../redux/store"
 import { selectTask } from "../../../redux/task/taskSelector"
+import { setUser } from "../../../redux/user/userSlice"
+import { UserType } from "../../../redux/user/userTypes"
 import { createComment } from "../../../services/comment"
 import { getTask } from "../../../services/tasks"
 import CommentForm from "./commentForm/CommentForm"
@@ -40,6 +42,8 @@ type commentsByParentIdType = {
 }
 
 const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
+    console.log('rerender from taskModal')
+
     const { task } = useSelector(selectTask)
     useEffect(() => {
         if (task?.comments == null) return;
@@ -73,9 +77,21 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
 
     function onCommentCreate(message: string) {
         return createCommentFn({ taskId: task.id, message }).then(
-            (comment: CommentType) => dispatch(addLocalComment({ comment }))
-            // (comment: CommentType) => setComments((prevComments) => {
-            //     return [comment, ...prevComments];
+            (comment: CommentType & { user: UserType }) => {
+                dispatch(addLocalComment({
+                    comment: {
+                        id: comment.id,
+                        message: comment.message,
+                        createdAt: comment.createdAt,
+                        updatedAt: comment.updatedAt,
+                        userId: comment.userId,
+                        taskId: comment.taskId,
+                        children: comment.children,
+                        parentId: comment.parentId,
+                    }
+                })); dispatch(setUser({ user: comment.user }))
+            }
+
         )
     }
     return (

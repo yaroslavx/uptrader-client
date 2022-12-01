@@ -15,6 +15,8 @@ type TaskProps = {
 }
 
 const Task: FC<TaskProps> = ({ task, handleDragging }: TaskProps) => {
+    console.log('rerender from Task')
+
     const dispatch = useAppDispatch()
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
