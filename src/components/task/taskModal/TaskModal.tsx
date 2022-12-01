@@ -78,7 +78,6 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
             //     return [comment, ...prevComments];
         )
     }
-
     return (
         <div onClick={close} className='task_modal_container'>
             <div onClick={e => e.stopPropagation()} className="task_modal">

@@ -3,13 +3,13 @@ export type CommentType = {
   message: string;
   createdAt: Date;
   updatedAt: Date;
-  user: User;
+  userId: string;
   taskId: string;
   children: CommentType[];
   parentId: string;
 };
 
-export type User = {
+export type UserType = {
   id: string;
   name: string;
   comments: CommentType[];

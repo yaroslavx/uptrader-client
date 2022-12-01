@@ -6,6 +6,8 @@ import TaskModal from "./taskModal/TaskModal"
 import { TaskType } from "../../redux/task/taskTypes"
 import { useAppDispatch } from "../../redux/store"
 import { setTask } from "../../redux/task/taskSlice"
+import { useAsync } from "../../hooks/useAsync"
+import { getUser } from "../../services/user"
 
 type TaskProps = {
     task: TaskType

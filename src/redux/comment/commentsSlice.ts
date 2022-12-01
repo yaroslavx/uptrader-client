@@ -6,11 +6,7 @@ export const commentInitialState: CommentType = {
   message: '',
   createdAt: new Date(),
   updatedAt: new Date(),
-  user: {
-    id: '',
-    name: '',
-    comments: [],
-  },
+  userId: '',
   taskId: '',
   children: [],
   parentId: '',

@@ -1,19 +1,21 @@
 import { IconButton } from '../iconButton/IconButton';
 import { FaHeart, FaReply, FaEdit, FaTrash } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { selectProject } from '../../../../redux/project/projectSeleсtor';
 import { selectTask } from '../../../../redux/task/taskSelector';
 import { selectComments } from '../../../../redux/comment/commentsSelector';
-import { CommentType, User } from '../../../../redux/comment/commentsTypes';
+import { CommentType, UserType } from '../../../../redux/comment/commentsTypes';
 import { useUser } from '../../../../hooks/useUser';
 import CommentForm from '../commentForm/CommentForm';
 import { createComment, deleteComment, updateComment } from '../../../../services/comment';
-import { useAsyncFn } from '../../../../hooks/useAsync';
+import { useAsync, useAsyncFn } from '../../../../hooks/useAsync';
 import CommentList from '../commentList/CommentList';
 import { useAppDispatch } from '../../../../redux/store';
 import { addLocalComment, removeLocalComment, setComments, updateLocalComment } from '../../../../redux/comment/commentsSlice';
+import { getUser } from '../../../../services/user';
+import { setUseProxies } from 'immer';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -25,17 +27,23 @@ type CommentProps = {
     message: string;
     createdAt: Date;
     updatedAt: Date;
-    user: User;
+    userId: string;
     taskId: string;
     children: CommentType[];
     parentId: string;
 }
 
-const Comment = ({ id, message, user, createdAt }: CommentProps) => {
+const Comment = ({ id, message, userId, createdAt }: CommentProps) => {
     const dispatch = useAppDispatch()
     const { task } = useSelector(selectTask)
+    console.log(task)
     const { comments: commentsByParentId } = useSelector(selectComments)
-
+    const { loading, error, value: user } = useAsync(() => getUser(userId))
+    // const [userFromServer, setUserFromServer] = useState<UserType>()
+    // useEffect(() => {
+    //     if (user) setUserFromServer(user)
+    // }, [user])
+    // console.log(userFromServer)
     // const {
     //     createLocalComment,
     //     updateLocalComment,
@@ -89,9 +97,11 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
         <>
             <div className='comment'>
                 <div className='header'>
-                    <span className='name'>{user.name}</span>
+                    <span className='name'>{user && user['name']}</span>
                     <span className='date'>
-                        {dateFormatter.format(createdAt)}
+                        {"time"
+                            // dateFormatter.format(createdAt)
+                        }
                     </span>
                 </div>
                 {isEditing ? (
@@ -115,7 +125,7 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
                         Icon={FaReply}
                         aria-label={isReplying ? 'Cancel Reply' : 'Reply'}
                     />
-                    {user.id === currentUser.id && (
+                    {(user && user['id']) === currentUser?.id && (
                         <>
                             <IconButton
                                 onClick={() => setIsEditing((prev) => !prev)}
