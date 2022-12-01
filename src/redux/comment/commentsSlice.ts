@@ -30,9 +30,37 @@ const commentSlice = createSlice({
     ) => {
       state.comments = action.payload.comments;
     },
+    addLocalComment: (
+      state,
+      action: PayloadAction<{ comment: CommentType }>
+    ) => {
+      state.comments.push(action.payload.comment);
+    },
+    updateLocalComment: (
+      state,
+      action: PayloadAction<{ commentId: string; message: string }>
+    ) => {
+      state.comments.map((comment) => {
+        if (comment.id === action.payload.commentId)
+          return (comment.message = action.payload.message);
+      });
+    },
+    removeLocalComment: (
+      state,
+      action: PayloadAction<{ commentId: string }>
+    ) => {
+      state.comments.filter(
+        (comment) => comment.id !== action.payload.commentId
+      );
+    },
   },
 });
 
-export const { setComments } = commentSlice.actions;
+export const {
+  setComments,
+  addLocalComment,
+  updateLocalComment,
+  removeLocalComment,
+} = commentSlice.actions;
 
 export default commentSlice.reducer;

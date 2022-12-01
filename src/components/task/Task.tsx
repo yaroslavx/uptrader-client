@@ -3,7 +3,6 @@ import { ProjectStatus } from "../tasksColumn/TasksColumn"
 import { HiOutlineChat } from 'react-icons/hi'
 import "./task.scss"
 import TaskModal from "./taskModal/TaskModal"
-import { TaskProvider } from "./contexts/TaskContext"
 import { TaskType } from "../../redux/task/taskTypes"
 import { useAppDispatch } from "../../redux/store"
 import { setTask } from "../../redux/task/taskSlice"

@@ -1,4 +1,13 @@
-import React, { useState } from 'react';
+import { AxiosError } from 'axios';
+import React, { FormEvent, ReactNode, useState } from 'react';
+
+type CommentFormProps = {
+    loading?: boolean,
+    error?: AxiosError,
+    onSubmit: (message: string) => Promise<any>,
+    autoFocus?: boolean,
+    initialValue?: string,
+}
 
 const CommentForm = ({
     loading,
@@ -6,10 +15,10 @@ const CommentForm = ({
     onSubmit,
     autoFocus = false,
     initialValue = '',
-}) => {
+}: CommentFormProps) => {
     const [message, setMessage] = useState(initialValue);
 
-    function handleSubmit(e) {
+    function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         onSubmit(message).then(() => setMessage(''));
     }
@@ -26,7 +35,7 @@ const CommentForm = ({
                     {loading ? 'Loading' : 'Post'}
                 </button>
             </div>
-            <div className='error-msg'>{error}</div>
+            {/* <div className='error-msg'>{error}</div> */}
         </form>
     );
 };

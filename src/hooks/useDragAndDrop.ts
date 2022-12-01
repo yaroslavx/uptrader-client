@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Task from '../components/task/Task';
 import { ProjectStatus } from '../components/tasksColumn/TasksColumn';
-import { Project, TaskType } from '../redux/project/projectTypes';
+import { Project } from '../redux/project/projectTypes';
 import { useAppDispatch } from '../redux/store';
+import { TaskType } from '../redux/task/taskTypes';
 import { updateTaskStatus } from '../services/tasks';
 import { useAsyncFn } from './useAsync';
 

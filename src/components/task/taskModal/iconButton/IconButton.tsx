@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
+import { IconType } from "react-icons";
 
 type IconButton = {
-  Icon: string,
-  isActive: boolean,
-  color: string,
-  children: ReactNode,
+  Icon: IconType,
+  isActive?: boolean,
+  color?: string,
+  children?: ReactNode,
+  onClick?: () => void
 }
 
 export function IconButton({ Icon, isActive, color, children, ...props }: IconButton) {

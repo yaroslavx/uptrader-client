@@ -3,13 +3,12 @@ import { useSelector } from "react-redux"
 import { FileNode, root } from "../../../assets/comments"
 import { useAsync, useAsyncFn } from "../../../hooks/useAsync"
 import { selectComments } from "../../../redux/comment/commentsSelector"
-import { setComments } from "../../../redux/comment/commentsSlice"
+import { addLocalComment, setComments } from "../../../redux/comment/commentsSlice"
 import { CommentType } from "../../../redux/comment/commentsTypes"
 import { useAppDispatch } from "../../../redux/store"
 import { selectTask } from "../../../redux/task/taskSelector"
 import { createComment } from "../../../services/comment"
 import { getTask } from "../../../services/tasks"
-import { useTask } from "../contexts/TaskContext"
 import CommentForm from "./commentForm/CommentForm"
 import CommentList from "./commentList/CommentList"
 import './taskModal.scss'
@@ -37,7 +36,7 @@ export type TaskModal = {
 // }
 
 type commentsByParentIdType = {
-    [key: string]: CommentType[]
+    [key: string | number]: CommentType[]
 }
 
 const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
@@ -74,10 +73,10 @@ const TaskModal: FC<TaskModal> = ({ close }: TaskModal) => {
 
     function onCommentCreate(message: string) {
         return createCommentFn({ taskId: task.id, message }).then(
-            (comment: CommentType) => setComments((prevComments) => {
-                return [comment, ...prevComments];
-            })
-        );
+            (comment: CommentType) => dispatch(addLocalComment({ comment }))
+            // (comment: CommentType) => setComments((prevComments) => {
+            //     return [comment, ...prevComments];
+        )
     }
 
     return (

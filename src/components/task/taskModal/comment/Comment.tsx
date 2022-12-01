@@ -1,4 +1,4 @@
-import { IconButton } from './IconButton';
+import { IconButton } from '../iconButton/IconButton';
 import { FaHeart, FaReply, FaEdit, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 
@@ -12,6 +12,8 @@ import CommentForm from '../commentForm/CommentForm';
 import { createComment, deleteComment, updateComment } from '../../../../services/comment';
 import { useAsyncFn } from '../../../../hooks/useAsync';
 import CommentList from '../commentList/CommentList';
+import { useAppDispatch } from '../../../../redux/store';
+import { addLocalComment, removeLocalComment, setComments, updateLocalComment } from '../../../../redux/comment/commentsSlice';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -30,6 +32,7 @@ type CommentProps = {
 }
 
 const Comment = ({ id, message, user, createdAt }: CommentProps) => {
+    const dispatch = useAppDispatch()
     const { task } = useSelector(selectTask)
     const { comments: commentsByParentId } = useSelector(selectComments)
 
@@ -39,17 +42,17 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
     //     deleteLocalComment,
     // } = usePost();
 
-    function createLocalComment(comment: CommentType) {
-        setComments((prevComments) => {
-            return [comment, ...prevComments];
-        });
-    }
+    // function createLocalComment(comment: CommentType) {
+    //     setComments((prevComments) => {
+    //         return [comment, ...prevComments];
+    //     });
+    // }
 
-    function getReplies(parentId: string) {
-        return commentsByParentId[parentId];
-    };
+    // function getReplies(parentId: string) {
+    //     return commentsByParentId[parentId];
+    // };
 
-    const childComments = getReplies(id);
+    const childComments = commentsByParentId.filter((comment) => comment.id === id);
     const [areChildrenHidden, setAreChildrenHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -63,7 +66,7 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
             .execute({ taskId: task.id, message, parentId: id })
             .then((comment: CommentType) => {
                 setIsReplying(false);
-                createLocalComment(comment);
+                dispatch(addLocalComment({ comment }))
             });
     }
 
@@ -72,14 +75,14 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
             .execute({ taskId: task.id, message, id })
             .then((comment: CommentType) => {
                 setIsEditing(false);
-                updateLocalComment(id, comment.message);
+                dispatch(updateLocalComment({ commentId: id, message: comment.message }))
             });
     }
 
     function onCommentDelete() {
         return deleteCommentFn
             .execute({ taskId: task.id, id })
-            .then((comment: CommentType) => deleteLocalComment(comment.id));
+            .then((comment: CommentType) => dispatch(removeLocalComment({ commentId: comment.id })));
     }
 
     return (
@@ -96,8 +99,8 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
                         autoFocus
                         initialValue={message}
                         onSubmit={onCommentUpdate}
-                        loading={updateComment.loading}
-                        error={updateComment.error}
+                    // loading={updateComment.loading}
+                    // error={updateComment.error}
                     />
                 ) : (
                     <div className='message'>{message}</div>
@@ -121,7 +124,7 @@ const Comment = ({ id, message, user, createdAt }: CommentProps) => {
                                 aria-label={isEditing ? 'Cancel Editing' : 'Edit'}
                             />
                             <IconButton
-                                disabled={deleteComment.loading}
+                                // disabled={deleteComment.loading}
                                 onClick={onCommentDelete}
                                 Icon={FaTrash}
                                 aria-label='Delete'
