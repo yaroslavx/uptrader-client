@@ -9,6 +9,7 @@ import ProjectsPage from './pages/projectsPage/ProjectsPage';
 import ProjectPage from './pages/projectPage/ProjectPage';
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import { HelmetProvider } from 'react-helmet-async';
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
 const App = () => {
     return (
         <div className="app">
-            <RouterProvider router={router} />
+            <HelmetProvider>
+                <RouterProvider router={router} />
+            </HelmetProvider>
         </div>
     )
 }

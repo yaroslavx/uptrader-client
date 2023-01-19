@@ -19,6 +19,13 @@
     padding: 10px;
     border-radius: 10px;
     z-index: 20;
+
+    .subtasks {
+      padding: 10px 0;
+
+      .subtasks {
+      }
+    }
   }
 }
 
@@ -66,12 +73,12 @@ button {
   padding: 0.5em;
   font-size: inherit;
   font-family: inherit;
-  border: 2px solid hsl(235, 50%, 74%);
+  border: 2px solid hsl(0, 0%, 88%);
   line-height: 1.4;
 }
 
 .message-input:focus {
-  border-color: hsl(235, 100%, 67%);
+  border-color: hsl(0, 0%, 77%);
   outline: none;
 }
 
@@ -114,7 +121,7 @@ button {
 
 .collapse-line:hover::before,
 .collapse-line:focus-visible::before {
-  background-color: hsl(235, 100%, 60%);
+  background-color: hsl(0, 0%, 77%);
 }
 
 .collapse-line::before {
@@ -124,7 +131,7 @@ button {
   bottom: 0;
   left: 50%;
   width: 1px;
-  background-color: hsl(235, 50%, 74%);
+  background-color: hsl(0, 0%, 88%);
   transition: background-color 100ms ease-in-out;
 }
 
@@ -133,8 +140,8 @@ button {
 }
 
 .btn {
-  --hue: 235;
-  --color: hsl(var(--hue), 100%, 67%);
+  --hue: 199;
+  --color: hsl(var(--hue), 70%, 57%);
   padding: 0.5em 1em;
   background: var(--color);
   border: none;
@@ -190,12 +197,12 @@ button {
 
 .comment {
   padding: 0.5rem;
-  border: 1px solid hsl(235, 100%, 90%);
+  border: 1px solid hsl(0, 0%, 77%);
   border-radius: 0.5rem;
 }
 
 .comment .header {
-  color: hsl(235, 50%, 67%);
+  color: hsl(0, 0%, 55%);
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.25rem;
@@ -223,5 +230,5 @@ button {
 }
 
 .btn[disabled] {
-  --color: hsl(var(--hue), 20%, 74%);
+  --color: hsl(var(--hue), 0%, 74%);
 }
